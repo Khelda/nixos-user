@@ -2,10 +2,13 @@
   description = "Custom user configuration. Thanks for the idea, thesola.";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-24.05";
-    flake-utils.url = "github:numtide/flake-utils";
-    # Add custom configs
+    nvim.url = "github:Khelda/nvim-config";
+    zshrc.url = "github:Khelda/zshrc.d";
+    cli-goodies.url = "git+https://cloud.thesola.io/git/thesola10/cli-goodies";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }: { };
+  outputs = { self, nvim, zshrc, cli-goodies, ... }: {
+    nixosModules.default = { pkgs, config, lib, ... }@m:
+      import ./default.nix ({ inherit zshrc nvim cli-goodies; } // m);
+  };
 }
